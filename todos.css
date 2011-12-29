@@ -56,6 +56,10 @@ html {
     padding: 20px 0 30px 0;
     line-height: 1;
   }
+  #todoapp h1 small{
+    color: #ddd;
+    font-size: 16px;
+  }
   h3 {
     font-size: 15px;
     font-weight: bold;
