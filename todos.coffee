@@ -10,7 +10,8 @@ $ ->
         @set content: @defaults.content
 
     toggle: ->
-      @save done: not @get('done')
+      done = @get('done')
+      @save done: not done
 
     clear: ->
       @destroy()
@@ -105,10 +106,12 @@ $ ->
       Todos.fetch()
 
     render: =>
-      @$('#todo-stats').html @statsTemplate
+      template = @statsTemplate
         total: Todos.length
         done: Todos.done().length
         remaining: Todos.remaining().length
+      @$('#todo-stats').html(template)
+      return this
 
     addOne: (todo) =>
       view = new TodoView(model: todo)
@@ -128,7 +131,7 @@ $ ->
         @input.val('')
 
     clearCompleted: ->
-      _.each Todos.done(), (todo) -> todo.clear()
+      _.each(Todos.done(), (todo) -> todo.clear())
       false
 
     showTooltip: (event) ->
