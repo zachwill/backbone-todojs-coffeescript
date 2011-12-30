@@ -64,7 +64,7 @@ $ ->
       @$('.todo-content').text(content)
       @input = @$('.todo-input')
       @input.bind('blur', @close)
-      @input.val(content)
+            .val(content)
 
     toggleDone: ->
       @model.toggle()
