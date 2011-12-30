@@ -1,13 +1,9 @@
 $ ->
 
   class Todo extends Backbone.Model
-    defaults:
-      content: "Empty todo..."
+    defaults: ->
       done: false
-
-    initialize: ->
-      if not @get('content')
-        @set content: @defaults.content
+      order: Todos.nextOrder()
 
     toggle: ->
       done = @get('done')
@@ -48,7 +44,7 @@ $ ->
     events:
       'click .check': 'toggleDone'
       'click .todo-destroy': 'clear'
-      'dblclick .todo-content': 'edit'
+      'dblclick .todo-text': 'edit'
       'keypress .todo-input': 'updateOnEnter'
 
     initialize: ->
@@ -57,15 +53,15 @@ $ ->
 
     render: =>
       $(@el).html @template(@model.toJSON())
-      @setContent()
+      @setText()
       return this
 
-    setContent: ->
-      content = @model.get('content')
-      @$('.todo-content').text(content)
+    setText: ->
+      text = @model.get('text')
+      @$('.todo-text').text(text)
       @input = @$('.todo-input')
       @input.bind('blur', @close)
-            .val(content)
+            .val(text)
 
     toggleDone: ->
       @model.toggle()
@@ -75,7 +71,7 @@ $ ->
       @input.focus()
 
     close: =>
-      @model.save content: @input.val()
+      @model.save text: @input.val()
       $(@el).removeClass('editing')
 
     updateOnEnter: (event) ->
@@ -120,14 +116,10 @@ $ ->
     addAll: =>
       Todos.each(@addOne)
 
-    newAttributes: ->
-      content: @input.val()
-      order: Todos.nextOrder()
-      done: false
-
     createOnEnter: (event) ->
-      if event.keyCode is 13
-        Todos.create @newAttributes()
+      text = @input.val()
+      if text and event.keyCode is 13
+        Todos.create(text: text)
         @input.val('')
 
     clearCompleted: ->
