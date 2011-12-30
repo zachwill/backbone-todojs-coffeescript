@@ -30,7 +30,7 @@ $ ->
        @without.apply(this, @done())
 
      nextOrder: ->
-       if not @length then return 1
+       return 1 unless @length
        @last().get('order') + 1
 
      comparator: (todo) ->
@@ -53,7 +53,7 @@ $ ->
 
     initialize: ->
       @model.bind 'change', @render
-      @model.view = @
+      @model.bind 'destroy', @remove
 
     render: =>
       $(@el).html @template(@model.toJSON())
@@ -81,11 +81,11 @@ $ ->
     updateOnEnter: (event) ->
       if event.keyCode is 13 then @close()
 
-    remove: ->
+    remove: =>
       $(@el).remove()
 
     clear: ->
-      @model.clear()
+      @model.destroy()
 
 
   class AppView extends Backbone.View
@@ -131,7 +131,7 @@ $ ->
         @input.val('')
 
     clearCompleted: ->
-      _.each(Todos.done(), (todo) -> todo.clear())
+      _.each(Todos.done(), (todo) -> todo.destroy())
       false
 
     showTooltip: (event) ->
