@@ -111,7 +111,7 @@ $ ->
 
     addOne: (todo) =>
       view = new TodoView(model: todo)
-      @$('#todo-list').append view.render().el
+      $('#todo-list').append view.render().el
 
     addAll: =>
       Todos.each(@addOne)
