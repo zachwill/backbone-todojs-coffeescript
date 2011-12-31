@@ -9,10 +9,6 @@ $ ->
       done = @get('done')
       @save done: not done
 
-    clear: ->
-      @destroy()
-      @view.remove()
-
 
    class TodoList extends Backbone.Collection
      model: Todo
